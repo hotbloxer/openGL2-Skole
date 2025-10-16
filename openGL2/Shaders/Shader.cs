@@ -108,13 +108,17 @@ namespace openGL2.Shaders
             {{ 
                 fragPosition = vec3(model * vec4(aPosition, 1.0));
                 uv = aUV;
-                
-                mat3 normalMatrix = transpose(inverse(mat3(model)));
+
+
+                mat4 modelview2 = model * view;
+                mat3 normalMatrix = transpose(inverse(mat3( modelview2)));
                 mat4 modelViewInstance = modelView;
+
+                
     
                 tbn = mat3(
-                  normalize(normalMatrix * vec3(aTangent )),
                   normalize(normalMatrix * vec3(aBiNormal)),
+                  normalize(normalMatrix * vec3(aTangent )),
                   normalize(normalMatrix * vec3(aNormal  )));
 
                 //normalize(vec3(model * vec4(aNormal,   0.0))),
@@ -178,8 +182,7 @@ namespace openGL2.Shaders
             {{
       
             vec3 normal;
-             
-                
+
 
             if ({useTexture}) 
 
@@ -190,7 +193,7 @@ namespace openGL2.Shaders
             normal = normalize(normal * 2.0 - 1.0); 
 
             // Virker ikke, fucker alt op hvis den bliver sat til
-            // normal = tbn * normal ;
+             //normal = normal * tbn;
             }} 
             else 
             {{
